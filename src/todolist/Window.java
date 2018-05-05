@@ -4,6 +4,12 @@
  * and open the template in the editor.
  */
 package todolist;
+import java.awt.Color;
+import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
+
 
 /**
  *
@@ -11,11 +17,16 @@ package todolist;
  */
 public class Window extends javax.swing.JFrame {
 
+    DefaultTableModel tabela; 
     /**
      * Creates new form Window
      */
+    String kategoria = "";
     public Window() {
-        initComponents();
+       initComponents();
+       tabela = (DefaultTableModel) tableTodo.getModel();
+       
+        
     }
 
     /**
@@ -27,17 +38,15 @@ public class Window extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel3 = new javax.swing.JPanel();
-        jDialog1 = new javax.swing.JDialog();
+        wyborDialog = new javax.swing.JDialog();
         jPanel4 = new javax.swing.JPanel();
         anulujButton = new javax.swing.JButton();
         tytulField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         kategoriaCombo = new javax.swing.JComboBox<>();
-        dataButton = new javax.swing.JButton();
         dodajZadanieButton = new javax.swing.JButton();
-        dataEtykieta = new javax.swing.JLabel();
+        dateChooser = new datechooser.beans.DateChooserCombo();
         dateChooserPanel = new datechooser.beans.DateChooserPanel();
         jPanel1 = new javax.swing.JPanel();
         wszystkoPanel = new javax.swing.JPanel();
@@ -52,23 +61,17 @@ public class Window extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         usunButton = new javax.swing.JButton();
         dodajButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableTodo = new javax.swing.JTable();
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jDialog1.setBackground(new java.awt.Color(0, 75, 135));
+        wyborDialog.setTitle("Dodaj Zadanie");
+        wyborDialog.setAlwaysOnTop(true);
+        wyborDialog.setBackground(new java.awt.Color(0, 75, 135));
+        wyborDialog.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel4.setBackground(new java.awt.Color(0, 75, 135));
 
-        anulujButton.setBackground(new java.awt.Color(0, 75, 135));
+        anulujButton.setBackground(new java.awt.Color(255, 255, 255));
         anulujButton.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
         anulujButton.setText("Anuluj");
         anulujButton.addActionListener(new java.awt.event.ActionListener() {
@@ -90,56 +93,55 @@ public class Window extends javax.swing.JFrame {
 
         kategoriaCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Praca", "Dom", "Uczelnia" }));
 
-        dataButton.setBackground(new java.awt.Color(0, 75, 135));
-        dataButton.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
-        dataButton.setText("Data");
-        dataButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dataButtonActionPerformed(evt);
-            }
-        });
-
-        dodajZadanieButton.setBackground(new java.awt.Color(0, 75, 135));
+        dodajZadanieButton.setBackground(new java.awt.Color(255, 255, 255));
         dodajZadanieButton.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
-        dodajZadanieButton.setText("Data");
+        dodajZadanieButton.setText("Dodaj");
         dodajZadanieButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dodajZadanieButtonActionPerformed(evt);
             }
         });
 
+        dateChooser.setFieldFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 13));
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dodajZadanieButton, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(anulujButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dataButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tytulField, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dataEtykieta, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(kategoriaCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(328, 328, 328)
-                        .addComponent(dodajZadanieButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(anulujButton)))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(28, 28, 28)))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tytulField)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(kategoriaCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(266, 266, 266)))))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(dataButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dataEtykieta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap(54, Short.MAX_VALUE)
+                .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tytulField)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -156,14 +158,14 @@ public class Window extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
-        jDialog1.getContentPane().setLayout(jDialog1Layout);
-        jDialog1Layout.setHorizontalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout wyborDialogLayout = new javax.swing.GroupLayout(wyborDialog.getContentPane());
+        wyborDialog.getContentPane().setLayout(wyborDialogLayout);
+        wyborDialogLayout.setHorizontalGroup(
+            wyborDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jDialog1Layout.setVerticalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        wyborDialogLayout.setVerticalGroup(
+            wyborDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -212,10 +214,26 @@ public class Window extends javax.swing.JFrame {
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setBackground(new java.awt.Color(97, 212, 195));
+    addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        public void mouseMoved(java.awt.event.MouseEvent evt) {
+            formMouseMoved(evt);
+        }
+    });
 
     jPanel1.setBackground(new java.awt.Color(0, 65, 117));
 
     wszystkoPanel.setBackground(new java.awt.Color(0, 75, 135));
+    wszystkoPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            wszystkoPanelMouseClicked(evt);
+        }
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            wszystkoPanelMouseEntered(evt);
+        }
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            wszystkoPanelMouseExited(evt);
+        }
+    });
 
     jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
     jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -239,6 +257,17 @@ public class Window extends javax.swing.JFrame {
     );
 
     pracaPanel.setBackground(new java.awt.Color(0, 75, 135));
+    pracaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            pracaPanelMouseClicked(evt);
+        }
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            pracaPanelMouseEntered(evt);
+        }
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            pracaPanelMouseExited(evt);
+        }
+    });
 
     jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
     jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -261,6 +290,17 @@ public class Window extends javax.swing.JFrame {
     );
 
     domPanel.setBackground(new java.awt.Color(0, 75, 135));
+    domPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            domPanelMouseClicked(evt);
+        }
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            domPanelMouseEntered(evt);
+        }
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            domPanelMouseExited(evt);
+        }
+    });
 
     jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
     jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -283,6 +323,17 @@ public class Window extends javax.swing.JFrame {
     );
 
     uczelniaPanel.setBackground(new java.awt.Color(0, 75, 135));
+    uczelniaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            uczelniaPanelMouseClicked(evt);
+        }
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            uczelniaPanelMouseEntered(evt);
+        }
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            uczelniaPanelMouseExited(evt);
+        }
+    });
 
     jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
     jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -335,12 +386,12 @@ public class Window extends javax.swing.JFrame {
             .addComponent(uczelniaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(domPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(200, Short.MAX_VALUE))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
-    jPanel2.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleBackground"));
+    jPanel2.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleGradient"));
 
-    usunButton.setBackground(new java.awt.Color(0, 75, 135));
+    usunButton.setBackground(new java.awt.Color(255, 255, 255));
     usunButton.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
     usunButton.setText("Usuń");
     usunButton.addActionListener(new java.awt.event.ActionListener() {
@@ -349,7 +400,7 @@ public class Window extends javax.swing.JFrame {
         }
     });
 
-    dodajButton.setBackground(new java.awt.Color(0, 75, 135));
+    dodajButton.setBackground(new java.awt.Color(255, 255, 255));
     dodajButton.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
     dodajButton.setText("Dodaj");
     dodajButton.addActionListener(new java.awt.event.ActionListener() {
@@ -358,21 +409,49 @@ public class Window extends javax.swing.JFrame {
         }
     });
 
+    jScrollPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleBackground"));
+    jScrollPane1.setBorder(null);
+
+    tableTodo.setAutoCreateRowSorter(true);
+    tableTodo.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleGradient"));
+    tableTodo.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+    tableTodo.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+
+        },
+        new String [] {
+            "Kategoria", "Data", "Opis", "Status"
+        }
+    ) {
+        Class[] types = new Class [] {
+            java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+        };
+
+        public Class getColumnClass(int columnIndex) {
+            return types [columnIndex];
+        }
+    });
+    tableTodo.setFillsViewportHeight(true);
+    tableTodo.setGridColor(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleBackground"));
+    jScrollPane1.setViewportView(tableTodo);
+
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
     jPanel2Layout.setHorizontalGroup(
         jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-            .addContainerGap(457, Short.MAX_VALUE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(dodajButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(usunButton)
             .addContainerGap())
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
     );
     jPanel2Layout.setVerticalGroup(
         jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(usunButton)
                 .addComponent(dodajButton))
@@ -398,25 +477,91 @@ public class Window extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void usunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunButtonActionPerformed
-        // TODO add your handling code here:
+        if(tableTodo.getSelectedRow() != -1)
+            tabela.removeRow(tableTodo.getSelectedRow());
     }//GEN-LAST:event_usunButtonActionPerformed
 
     private void dodajButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajButtonActionPerformed
-        // TODO add your handling code here:
+        wyborDialog.pack();
+        wyborDialog.setVisible(true);     
     }//GEN-LAST:event_dodajButtonActionPerformed
 
     private void anulujButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujButtonActionPerformed
-        // TODO add your handling code here:
+        wyborDialog.dispose();
     }//GEN-LAST:event_anulujButtonActionPerformed
 
-    private void dataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dataButtonActionPerformed
-
     private void dodajZadanieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajZadanieButtonActionPerformed
-        // TODO add your handling code here:
+        String kat = kategoriaCombo.getSelectedItem().toString();
+        String opis = tytulField.getText();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(dateChooser.getSelectedDate().getTime());
+        tabela.addRow(new Object[]{kat,date,opis,false});
+        wyborDialog.dispose();
+         
     }//GEN-LAST:event_dodajZadanieButtonActionPerformed
 
+    private void wszystkoPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wszystkoPanelMouseEntered
+      wszystkoPanel.setBackground(new Color(0,46,84));
+    }//GEN-LAST:event_wszystkoPanelMouseEntered
+
+    private void wszystkoPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wszystkoPanelMouseExited
+      wszystkoPanel.setBackground(new Color(0,75,135));
+    }//GEN-LAST:event_wszystkoPanelMouseExited
+
+    private void pracaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pracaPanelMouseEntered
+        pracaPanel.setBackground(new Color(0,46,84));
+    }//GEN-LAST:event_pracaPanelMouseEntered
+
+    private void pracaPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pracaPanelMouseExited
+        pracaPanel.setBackground(new Color(0,75,135));
+    }//GEN-LAST:event_pracaPanelMouseExited
+
+    private void domPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_domPanelMouseEntered
+       domPanel.setBackground(new Color(0,46,84));
+    }//GEN-LAST:event_domPanelMouseEntered
+
+    private void domPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_domPanelMouseExited
+        domPanel.setBackground(new Color(0,75,135));
+    }//GEN-LAST:event_domPanelMouseExited
+
+    private void uczelniaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uczelniaPanelMouseEntered
+        uczelniaPanel.setBackground(new Color(0,46,84));
+    }//GEN-LAST:event_uczelniaPanelMouseEntered
+
+    private void uczelniaPanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uczelniaPanelMouseExited
+        uczelniaPanel.setBackground(new Color(0,75,135));
+    }//GEN-LAST:event_uczelniaPanelMouseExited
+
+    private void wszystkoPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wszystkoPanelMouseClicked
+       kategoria = "";
+       Sort(kategoria);
+    }//GEN-LAST:event_wszystkoPanelMouseClicked
+
+    private void pracaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pracaPanelMouseClicked
+       kategoria = "Praca";
+       Sort(kategoria);
+    }//GEN-LAST:event_pracaPanelMouseClicked
+
+    private void uczelniaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uczelniaPanelMouseClicked
+        kategoria = "Uczelnia";
+        Sort(kategoria);
+    }//GEN-LAST:event_uczelniaPanelMouseClicked
+
+    private void domPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_domPanelMouseClicked
+        kategoria = "Dom";
+        Sort(kategoria);
+    }//GEN-LAST:event_domPanelMouseClicked
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseMoved
+    
+    private void Sort(String kategoriaZadania)
+    {
+       TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel> (tabela);
+       tableTodo.setRowSorter(tr);
+       tr.setRowFilter(RowFilter.regexFilter(kategoriaZadania));
+    }
     /**
      * @param args the command line arguments
      */
@@ -454,13 +599,11 @@ public class Window extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anulujButton;
-    private javax.swing.JButton dataButton;
-    private javax.swing.JLabel dataEtykieta;
+    private datechooser.beans.DateChooserCombo dateChooser;
     private datechooser.beans.DateChooserPanel dateChooserPanel;
     private javax.swing.JButton dodajButton;
     private javax.swing.JButton dodajZadanieButton;
     private javax.swing.JPanel domPanel;
-    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -470,13 +613,15 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> kategoriaCombo;
     private javax.swing.JPanel pracaPanel;
+    private javax.swing.JTable tableTodo;
     private javax.swing.JTextField tytulField;
     private javax.swing.JPanel uczelniaPanel;
     private javax.swing.JButton usunButton;
     private javax.swing.JPanel wszystkoPanel;
+    private javax.swing.JDialog wyborDialog;
     // End of variables declaration//GEN-END:variables
 }
