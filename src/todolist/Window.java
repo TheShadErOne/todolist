@@ -5,10 +5,21 @@
  */
 package todolist;
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
+import javax.swing.JFileChooser;
 
 
 /**
@@ -16,8 +27,12 @@ import javax.swing.table.TableRowSorter;
  * @author ShadEr laptop
  */
 public class Window extends javax.swing.JFrame {
-
+    
     DefaultTableModel tabela; 
+    File Actions;
+    boolean directoryExist = false;
+    java.nio.file.Path path;
+    
     /**
      * Creates new form Window
      */
@@ -25,8 +40,46 @@ public class Window extends javax.swing.JFrame {
     public Window() {
        initComponents();
        tabela = (DefaultTableModel) tableTodo.getModel();
+       try
+       {
+       String home = System.getProperty("user.home");
+       path = java.nio.file.Paths.get(home, "Actions");
+       directoryExist = java.nio.file.Files.exists(path);
+       }
+       catch(Exception ex)
+               {
+                   
+               }
+       if(directoryExist=true)
+       {
+        Actions = new File(path.toString());
+       }
+       else
+       {
+        JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(this);
+        Actions = chooser.getSelectedFile();
+       }
        
-        
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(Actions));
+            String fline = br.readLine().trim();
+            String [] ColumnNames = fline.split(",");
+            tabela.setColumnIdentifiers(ColumnNames);
+            Object [] tableLines = br.lines().toArray();
+            
+            for(int i=0;i<tableLines.length;i++)
+            {
+                String line = tableLines[i].toString().trim();
+                String [] dataRow = line.split(";");
+                tabela.addRow(dataRow);
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -48,6 +101,8 @@ public class Window extends javax.swing.JFrame {
         dodajZadanieButton = new javax.swing.JButton();
         dateChooser = new datechooser.beans.DateChooserCombo();
         dateChooserPanel = new datechooser.beans.DateChooserPanel();
+        wyborPliku = new javax.swing.JDialog();
+        jFileChooser1 = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         wszystkoPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -102,7 +157,7 @@ public class Window extends javax.swing.JFrame {
             }
         });
 
-        dateChooser.setFieldFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 13));
+        dateChooser.setFieldFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 13));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -171,38 +226,38 @@ public class Window extends javax.swing.JFrame {
 
         dateChooserPanel.setCurrentView(new datechooser.view.appearance.AppearancesList("Grey",
             new datechooser.view.appearance.ViewAppearance("custom",
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 13),
-                    new java.awt.Color(0, 0, 0),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(76, 76, 76),
                     new java.awt.Color(0, 0, 255),
                     false,
                     true,
                     new datechooser.view.appearance.swing.ButtonPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 13),
-                    new java.awt.Color(0, 0, 0),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(76, 76, 76),
                     new java.awt.Color(0, 0, 255),
                     true,
                     true,
                     new datechooser.view.appearance.swing.ButtonPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 13),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
                     new java.awt.Color(0, 0, 255),
                     new java.awt.Color(0, 0, 255),
                     false,
                     true,
                     new datechooser.view.appearance.swing.ButtonPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 13),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
                     new java.awt.Color(128, 128, 128),
                     new java.awt.Color(0, 0, 255),
                     false,
                     true,
                     new datechooser.view.appearance.swing.LabelPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 13),
-                    new java.awt.Color(0, 0, 0),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(76, 76, 76),
                     new java.awt.Color(0, 0, 255),
                     false,
                     true,
                     new datechooser.view.appearance.swing.LabelPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 13),
-                    new java.awt.Color(0, 0, 0),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(76, 76, 76),
                     new java.awt.Color(255, 0, 0),
                     false,
                     false,
@@ -211,6 +266,21 @@ public class Window extends javax.swing.JFrame {
                 false,
                 true)));
     dateChooserPanel.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+
+    javax.swing.GroupLayout wyborPlikuLayout = new javax.swing.GroupLayout(wyborPliku.getContentPane());
+    wyborPliku.getContentPane().setLayout(wyborPlikuLayout);
+    wyborPlikuLayout.setHorizontalGroup(
+        wyborPlikuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(wyborPlikuLayout.createSequentialGroup()
+            .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 0, Short.MAX_VALUE))
+    );
+    wyborPlikuLayout.setVerticalGroup(
+        wyborPlikuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(wyborPlikuLayout.createSequentialGroup()
+            .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 0, Short.MAX_VALUE))
+    );
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setBackground(new java.awt.Color(97, 212, 195));
@@ -495,7 +565,7 @@ public class Window extends javax.swing.JFrame {
         String opis = tytulField.getText();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(dateChooser.getSelectedDate().getTime());
-        tabela.addRow(new Object[]{kat,date,opis,false});
+        tabela.addRow(new Object[]{kat,date,opis});
         wyborDialog.dispose();
          
     }//GEN-LAST:event_dodajZadanieButtonActionPerformed
@@ -604,6 +674,7 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JButton dodajButton;
     private javax.swing.JButton dodajZadanieButton;
     private javax.swing.JPanel domPanel;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -623,5 +694,6 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JButton usunButton;
     private javax.swing.JPanel wszystkoPanel;
     private javax.swing.JDialog wyborDialog;
+    private javax.swing.JDialog wyborPliku;
     // End of variables declaration//GEN-END:variables
 }
