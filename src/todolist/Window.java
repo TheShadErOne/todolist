@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.RowFilter;
@@ -567,8 +569,8 @@ public class Window extends javax.swing.JFrame {
             value [i] = tableTodo.getModel().getValueAt(row, i).toString();
             }
             String valueTemp = String.join(";", value);
+            File tempFile = new File("temp.txt");
             File inputFile = new File("Actions.txt");
-            File tempFile = new File("myTempFile.txt");
 
             BufferedReader reader;
             BufferedWriter writer;
@@ -577,15 +579,19 @@ public class Window extends javax.swing.JFrame {
             String currentLine;
             reader = new BufferedReader(new FileReader(inputFile));
             writer = new BufferedWriter(new FileWriter(tempFile));
-            while((currentLine = reader.readLine()) != null) {
+            while((currentLine = reader.readLine()) != null) 
+            {
             // trim newline when comparing with lineToRemove
             String trimmedLine = currentLine.trim();
             if(trimmedLine.equals(lineToRemove)) continue;
             writer.write(currentLine + System.getProperty("line.separator"));
             }
-            writer.close(); 
-            reader.close(); 
-            boolean successful = tempFile.renameTo(inputFile);
+            inputFile.delete();
+            reader.close();
+            writer.close();
+            renameFiles("temp.txt","Actions.txt");
+//            boolean successful = tempFile.renameTo(Actions);
+//            System.out.println(successful);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -721,6 +727,38 @@ public class Window extends javax.swing.JFrame {
             }
         });
     }
+    void renameFiles(String oldName, String newName)
+{
+    String sCurrentLine = "";
+
+    try
+    {
+        BufferedReader br = new BufferedReader(new FileReader(oldName));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(newName));
+
+        while ((sCurrentLine = br.readLine()) != null)
+        {
+            bw.write(sCurrentLine);
+            bw.newLine();
+        }
+
+        br.close();
+        bw.close();
+
+        File org = new File(oldName);
+        org.delete();
+
+    }
+    catch (FileNotFoundException e)
+    {
+        e.printStackTrace();
+    }
+    catch (IOException e)
+    {
+        e.printStackTrace();
+    }
+
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anulujButton;
