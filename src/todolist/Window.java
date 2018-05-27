@@ -40,26 +40,18 @@ public class Window extends javax.swing.JFrame {
     public Window() {
        initComponents();
        tabela = (DefaultTableModel) tableTodo.getModel();
-       try
+       Actions = new File("Actions.txt");
+       boolean statusFile = false;
+        try {
+            statusFile = Actions.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+       if(statusFile==false)
        {
        String home = System.getProperty("user.home");
        path = java.nio.file.Paths.get(home, "Actions");
-       directoryExist = java.nio.file.Files.exists(path);
-       }
-       catch(Exception ex)
-               {
-                   
-               }
-       if(directoryExist=true)
-       {
-        Actions = new File(path.toString());
-       }
-       else
-       {
-        JFileChooser chooser = new JFileChooser();
-        chooser.showOpenDialog(this);
-        Actions = chooser.getSelectedFile();
-       }
        
         try {
             BufferedReader br = new BufferedReader(new FileReader(Actions));
@@ -80,6 +72,18 @@ public class Window extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
         }
+       }
+       else
+       {
+           try {  
+               BufferedWriter writer = new BufferedWriter(new FileWriter(Actions));
+               writer.write("Kategoria,Data,Opis");
+               writer.newLine();
+               writer.close();
+           } catch (IOException ex) {
+               Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
     }
 
     /**
@@ -484,25 +488,33 @@ public class Window extends javax.swing.JFrame {
 
     tableTodo.setAutoCreateRowSorter(true);
     tableTodo.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleGradient"));
-    tableTodo.setFont(new java.awt.Font("Century Gothic", 1, 13)); // NOI18N
+    tableTodo.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
     tableTodo.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
 
         },
         new String [] {
-            "Kategoria", "Data", "Opis", "Status"
+            "Kategoria", "Data", "Opis"
         }
     ) {
         Class[] types = new Class [] {
-            java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+            java.lang.String.class, java.lang.Object.class, java.lang.String.class
+        };
+        boolean[] canEdit = new boolean [] {
+            false, false, false
         };
 
         public Class getColumnClass(int columnIndex) {
             return types [columnIndex];
         }
+
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit [columnIndex];
+        }
     });
     tableTodo.setFillsViewportHeight(true);
     tableTodo.setGridColor(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleBackground"));
+    tableTodo.setRowHeight(36);
     jScrollPane1.setViewportView(tableTodo);
 
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -515,7 +527,7 @@ public class Window extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(usunButton)
             .addContainerGap())
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
     );
     jPanel2Layout.setVerticalGroup(
         jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -535,7 +547,8 @@ public class Window extends javax.swing.JFrame {
         .addGroup(layout.createSequentialGroup()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -547,8 +560,40 @@ public class Window extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void usunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunButtonActionPerformed
-        if(tableTodo.getSelectedRow() != -1)
+            int row = tableTodo.getSelectedRow();
+            String [] value = new String [tableTodo.getColumnCount()];   
+            for(int i=0;i< tableTodo.getColumnCount();i++)
+            {
+            value [i] = tableTodo.getModel().getValueAt(row, i).toString();
+            }
+            String valueTemp = String.join(";", value);
+            File inputFile = new File("Actions.txt");
+            File tempFile = new File("myTempFile.txt");
+
+            BufferedReader reader;
+            BufferedWriter writer;
+        try {
+            String lineToRemove = valueTemp;
+            String currentLine;
+            reader = new BufferedReader(new FileReader(inputFile));
+            writer = new BufferedWriter(new FileWriter(tempFile));
+            while((currentLine = reader.readLine()) != null) {
+            // trim newline when comparing with lineToRemove
+            String trimmedLine = currentLine.trim();
+            if(trimmedLine.equals(lineToRemove)) continue;
+            writer.write(currentLine + System.getProperty("line.separator"));
+            }
+            writer.close(); 
+            reader.close(); 
+            boolean successful = tempFile.renameTo(inputFile);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+            if(tableTodo.getSelectedRow() != -1)
             tabela.removeRow(tableTodo.getSelectedRow());
+            
     }//GEN-LAST:event_usunButtonActionPerformed
 
     private void dodajButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajButtonActionPerformed
@@ -566,6 +611,16 @@ public class Window extends javax.swing.JFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(dateChooser.getSelectedDate().getTime());
         tabela.addRow(new Object[]{kat,date,opis});
+        BufferedWriter writerNewLine;
+        try {
+            writerNewLine = new BufferedWriter(new FileWriter(Actions,true));
+            writerNewLine.write(kat+";"+date+";"+opis);
+            writerNewLine.newLine();
+            writerNewLine.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              
         wyborDialog.dispose();
          
     }//GEN-LAST:event_dodajZadanieButtonActionPerformed
