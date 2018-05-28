@@ -1,24 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package todolist;
 
 /**
- *
+ * This is a simple To do list program. 
+ * How to use it:
+ * 1. Download Zip file from GitHub
+ * 2. UnZip
+ * 3. Start todolist/dist/ToDolist.exe (on Windows)/ in console got to cd of download zip and write in Terminal java -jar ToDoList.jar (on ubuntu)
  * @author ShadEr laptop
  */
-public class ToDoList {
-    
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+public class ToDoList 
+{
+ 
+    public static void main(String[] args) 
+    {
+        java.awt.EventQueue.invokeLater(new Runnable() 
+        {
+            public void run() 
+            {
                 new Window().setVisible(true);
             }
         });
