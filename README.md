@@ -8,6 +8,6 @@ How to install:<br />
 4.Enjoy having all Your actions TO DO in one place<br />
 
 There are some screen shots:
-![alt text](https://raw.githubusercontent.com/sebastian-blaszczak/todolist/blob/master/screenshots/adding_stuff.png)
-![alt text](https://raw.githubusercontent.com/sebastian-blaszczak/todolist/blob/master/screenshots/layout_sorted.png)
-![alt text](https://raw.githubusercontent.com/sebastian-blaszczak/todolist/blob/master/screenshots/layout_unsorted.png)
+![alt text](https://raw.githubusercontent.com/sebastian-blaszczak/todolist/master/screenshots/adding_stuff.png)
+![alt text](https://raw.githubusercontent.com/sebastian-blaszczak/todolist/master/screenshots/layout_sorted.png)
+![alt text](https://raw.githubusercontent.com/sebastian-blaszczak/todolist/master/screenshots/layout_unsorted.png)
